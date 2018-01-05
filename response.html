@@ -1,0 +1,37 @@
+<html>
+<head>
+<style>
+body {
+	background-image: url("http://ecx.images-amazon.com/images/I/51ps2j9F5%2BL._SX300_.jpg");
+}
+em {
+	color: red;
+	font-style: normal;
+}
+h1, #content {
+	background-color: #eee;
+	text-align: center;
+}
+#content{
+	overflow:hidden;
+	display: block;
+	width: 1000px;
+	margin: auto;
+}
+</style>
+<title>TimeZapp - Results</title>
+</head>
+<body>
+<h1> Results </h1>
+<div id = "content">
+<p>For a meeting at {{t["hour"]}}:{{t["minute"]}} on {{t["day"]}} {{t["month"]}} {{t["year"]}} according to the local time of <i>{{reference}}</i>:</p>
+{% for x in input %}
+	{% if x["status"] == "found" %}
+		<p><b>{{x["user"]}}:</b>  <em>{{x["format"]["time"]}} on {{x["format"]["date"]}}</em> at the local time of <i>{{x["location"]}}</i></p>
+	{% else %}
+		<p>For <b>{{x["user"]}}</b>, we had trouble searching for the address <i>{{x["location"]}}</i></p>
+{% endif %}
+{% endfor %}
+</div>
+</body>
+</html>

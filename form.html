@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>TimeZapp - The Time Zone Planner App</title>
+<style>
+body {
+	background-image: url("http://ecx.images-amazon.com/images/I/51ps2j9F5%2BL._SX300_.jpg");
+}
+fieldset{
+	width:250px;
+	overflow: hidden;
+	background-color: #eee;
+	display: block;
+}
+p, h1 {
+	background-color: #eee;
+}
+</style>
+<script>
+window.onload = function() {
+	loopInput(document.getElementById("daymenu"), 1, 31);
+
+	var months = document.getElementById("monthmenu");
+	var monthArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	for (i = 0; i < monthArray.length; i++) {
+		var next = document.createElement("OPTION");
+		next.setAttribute("value", i + 1);
+		next.textContent = monthArray[i];
+		months.appendChild(next);
+	}
+
+	loopInput(document.getElementById("yearmenu"), 2015, 2035);
+	loopInput(document.getElementById("hourmenu"), 00, 23);
+	loopInput(document.getElementById("minutemenu"), 00, 59);
+
+	addInput('locations');
+	addInput('locations');	
+}
+
+function loopInput(e, start, end) {
+	for (i = start; i <= end; i++) {
+		var next = document.createElement("OPTION");
+		var num = i;
+		if(i < 10) {
+			i = "0" + i;		
+		}
+		next.setAttribute("value", i);
+		next.textContent = i;
+		e.appendChild(next);
+	}
+}
+
+function addInput(subName) {
+	var set = document.createElement("FIELDSET");
+
+	var namespace = document.createElement("INPUT");
+	namespace.setAttribute("type", "textfield");
+	namespace.setAttribute("placeholder", "NAME");
+	namespace.setAttribute("name", "user");
+	namespace.setAttribute("id", "user");
+
+	var textspace = document.createElement("TEXTAREA");
+	textspace.setAttribute("placeholder", "ADDRESS");
+	textspace.setAttribute("rows", "4");
+	textspace.setAttribute("cols", "50");
+	textspace.setAttribute("name", "address");
+	textspace.setAttribute("id", "address");
+
+	var selection = document.createElement("INPUT");
+	selection.setAttribute("type", "radio");
+	selection.setAttribute("name", "reference");
+
+	var reflabel = document.createElement("LABEL");
+	reflabel.innerHTML = "Reference";
+	
+	var delbtn = document.createElement("INPUT");
+	delbtn.setAttribute("type", "button");
+	delbtn.setAttribute("onclick", "removeInput(this)");
+	delbtn.setAttribute("value", "Delete");
+	
+	set.appendChild(namespace);
+	set.appendChild(selection);
+	set.appendChild(reflabel);
+	set.appendChild(delbtn);
+	set.appendChild(document.createElement("BR"));
+	set.appendChild(textspace);
+	var section = document.getElementById(subName);
+	section.insertBefore(set, section[0]);
+}
+
+function removeInput(e) {
+	e.parentNode.parentNode.removeChild(e.parentNode);
+}
+
+function setReferences() {
+	var btns = document.getElementsByName("reference");
+	for(i = 0; i < btns.length; i++) {
+		btns[i].setAttribute("value", i);
+	}
+}
+
+</script>
+
+</head>
+<body>
+<h1>TimeZapp - The World Meeting Organizer</h1>
+<p id = "intro">We welcome you to the TimeZapp planner, for meeting across timezones. Begin adding names and addresses of the meeting participants. Choose who will be the reference, or local time for which the meeting will be set. Then set the desired date and time of the reference person. We will then tell you when each person needs to call to participate in this meeting. TimeZapp uses the <a href = "https://en.wikipedia.org/wiki/24-hour_clock">24-hour clock system</a> to avoid ambiguity.</p>
+<form action="response" method="post" id = "mainform">
+	<div id = "locations"></div>
+	<input type="button" value="Add Location" onClick="addInput('locations');">
+	<br/>
+	<fieldset>
+	<label>Date</label>
+	<select name="day" id = "daymenu"></select>
+	<select name="month" id = "monthmenu"></select>
+	<select name="year" id = "yearmenu"></select>
+
+	</br>
+	 <label>Time</label>
+	<select name="hour" id = "hourmenu"></select>
+	<span>:</span>
+	<select name="minute" id = "minutemenu"></select>
+	</fieldset>
+	<br/>
+	<input type="submit" value="Plan Times" name="gobtn" onClick="setReferences();"/>
+</form>
+</body>
+</html>
